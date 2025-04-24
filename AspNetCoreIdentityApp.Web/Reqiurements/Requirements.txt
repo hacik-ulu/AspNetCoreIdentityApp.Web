@@ -1,0 +1,2 @@
+UI ile bir proje açtığımızda(MVC projeleri tarzı)--> Identity ve Cookies üzerinden authentication yapılmalı
+Sadece api endpointleri ile çalışıyorsak --> JWT Token yaparız.
