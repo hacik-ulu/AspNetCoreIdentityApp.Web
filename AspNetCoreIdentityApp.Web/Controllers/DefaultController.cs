@@ -8,9 +8,11 @@ namespace AspNetCoreIdentityApp.Web.Controllers
     public class DefaultController : Controller
     {
         private readonly UserManager<AppUser> _userManager;
-        public DefaultController(UserManager<AppUser> userManager)
+        private readonly SignInManager<AppUser> _signInManager;
+        public DefaultController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager)
         {
             _userManager = userManager;
+            _signInManager = signInManager;
         }
 
         [HttpGet]
@@ -18,7 +20,6 @@ namespace AspNetCoreIdentityApp.Web.Controllers
         {
             return View();
         }
-
 
         [HttpGet]
         public IActionResult SignUp()
@@ -56,5 +57,22 @@ namespace AspNetCoreIdentityApp.Web.Controllers
 
             return View();
         }
+
+
+        [HttpGet]
+        public IActionResult SignIn()
+        {
+            return View();
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> SignIn(SignUpViewModel request,string returnUrl = null)
+        {
+            return View();
+        }
+
+
+
     }
 }
