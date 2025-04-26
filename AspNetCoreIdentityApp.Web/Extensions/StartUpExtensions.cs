@@ -1,4 +1,5 @@
 ﻿using AspNetCoreIdentityApp.Web.CustomValidations;
+using AspNetCoreIdentityApp.Web.Localization;
 using AspNetCoreIdentityApp.Web.Models.Database;
 using AspNetCoreIdentityApp.Web.Models.Identity;
 
@@ -12,7 +13,7 @@ namespace AspNetCoreIdentityApp.Web.Extensions
             (options =>
             {
                 options.User.RequireUniqueEmail = true;
-                options.User.AllowedUserNameCharacters = "abcdefgjijklmnoprstuvwxyz123456789_";
+                options.User.AllowedUserNameCharacters = "abcdefghijklmnoprstuvwxyz1234567890_";
 
                 options.Password.RequiredLength = 6;
                 options.Password.RequireNonAlphanumeric = false;
@@ -20,7 +21,7 @@ namespace AspNetCoreIdentityApp.Web.Extensions
                 options.Password.RequireUppercase = false;
                 options.Password.RequireDigit = false;
 
-            }).AddPasswordValidator<PasswordValidator>().AddUserValidator<UserValidator>().AddEntityFrameworkStores<AppDbContext>();
+            }).AddPasswordValidator<PasswordValidator>().AddUserValidator<UserValidator>().AddErrorDescriber<LocalizationIdentityErrorDescriber>().AddEntityFrameworkStores<AppDbContext>();
 
         }
     }
