@@ -14,6 +14,13 @@ namespace AspNetCoreIdentityApp.Web.Controllers
         }
 
         [HttpGet]
+        public IActionResult Index()
+        {
+            return View();
+        }
+
+
+        [HttpGet]
         public IActionResult SignUp()
         {
             return View();
