@@ -14,6 +14,19 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 builder.Services.AddIdentityWithExt();
 
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    var cookieBuilder = new CookieBuilder();
+
+    cookieBuilder.Name = "AspNetCoreIdentityApp";
+    options.LoginPath = "/Default/SignIn";
+    
+    options.Cookie = cookieBuilder;
+    options.ExpireTimeSpan = TimeSpan.FromDays(60);
+    options.SlidingExpiration = true;
+});
+
+
 
 var app = builder.Build();
 
@@ -28,6 +41,7 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 
