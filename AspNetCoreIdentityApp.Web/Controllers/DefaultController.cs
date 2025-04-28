@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using AspNetCoreIdentityApp.Web.Extensions;
 using System.Security.Claims;
+using AspNetCoreIdentityApp.Web.Services;
 
 namespace AspNetCoreIdentityApp.Web.Controllers
 {
@@ -11,10 +12,12 @@ namespace AspNetCoreIdentityApp.Web.Controllers
     {
         private readonly UserManager<AppUser> _userManager;
         private readonly SignInManager<AppUser> _signInManager;
-        public DefaultController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager)
+        private readonly IEmailService _emailService;
+        public DefaultController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, IEmailService emailService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _emailService = emailService;
         }
 
         [HttpGet]
@@ -74,20 +77,21 @@ namespace AspNetCoreIdentityApp.Web.Controllers
 
             if (hasUser == null)
             {
-                ModelState.AddModelError(string.Empty, "Email adresi bulunamadı.");
+                ModelState.AddModelError(String.Empty, "Bu email adresine sahip kullanıcı bulunamamıştır.");
                 return View();
             }
 
-            string passwordResetToken = await _userManager.GeneratePasswordResetTokenAsync(hasUser);
+            string passwordResestToken = await _userManager.GeneratePasswordResetTokenAsync(hasUser);
 
-            var passwordResetLink = Url.Action("ResetPassword", "Default", new { userId = hasUser.Id, Token = passwordResetToken });
+            var passwordResetLink = Url.Action("ResetPassword", "Default", new { userId = hasUser.Id, Token = passwordResestToken }, HttpContext.Request.Scheme);
 
-            TempData["SuccessMessage"] = "Şifre yenileme linki e posta adresinize gönderilmiştir";
+            await _emailService.SendResetPasswordEmail(passwordResetLink!, hasUser.Email!);
+
+            TempData["SuccessMessage"] = "Şifre yenileme linki, eposta adresinize gönderilmiştir";
 
             return RedirectToAction(nameof(ForgetPassword));
-
-
         }
+
 
 
         [HttpGet]
