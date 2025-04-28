@@ -1,5 +1,6 @@
 using AspNetCoreIdentityApp.Web.Extensions;
 using AspNetCoreIdentityApp.Web.Models.Database;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,6 +13,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("SqlCon"));
 });
 
+
 builder.Services.AddIdentityWithExt();
 
 builder.Services.ConfigureApplicationCookie(options =>
@@ -20,7 +22,7 @@ builder.Services.ConfigureApplicationCookie(options =>
 
     cookieBuilder.Name = "AspNetCoreIdentityApp";
     options.LoginPath = "/Default/SignIn";
-    
+
     options.Cookie = cookieBuilder;
     options.ExpireTimeSpan = TimeSpan.FromDays(60);
     options.SlidingExpiration = true;
