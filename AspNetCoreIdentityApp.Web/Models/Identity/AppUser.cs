@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using AspNetCoreIdentityApp.Web.Models.EditUser;
+using Microsoft.AspNetCore.Identity;
 
 namespace AspNetCoreIdentityApp.Web.Models.Identity
 {
@@ -6,7 +7,7 @@ namespace AspNetCoreIdentityApp.Web.Models.Identity
     {
         public string? City { get; set; }
         public string? Picture { get; set; }
-        public DateTime? BirthDay { get; set; }
-        public byte? Gender { get; set; }
+        public DateTime? BirthDate { get; set; }
+        public Gender? Gender { get; set; }
     }
 }
