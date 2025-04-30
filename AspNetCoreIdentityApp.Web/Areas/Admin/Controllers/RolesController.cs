@@ -52,5 +52,67 @@ namespace AspNetCoreIdentityApp.Web.Areas.Admin.Controllers
 
             return RedirectToAction(nameof(RolesController.Index));
         }
+
+        public async Task<IActionResult> RoleUpdate(string id)
+        {
+            var roleToUpdate = await _roleManager.FindByIdAsync(id);
+
+            if (roleToUpdate == null)
+            {
+                throw new Exception("Güncellenecek rol bulunamamıştır");
+            }
+
+            var result = new RoleUpdateViewModel()
+            {
+                Id = roleToUpdate!.Id!,
+                Name = roleToUpdate.Name!
+            };
+
+            return View(result);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> RoleUpdate(RoleUpdateViewModel request)
+        {
+
+            var roleToUpdate = await _roleManager.FindByIdAsync(request.Id);
+
+            if (roleToUpdate == null)
+            {
+                throw new Exception("Güncellenecek rol bulunamamıştır");
+            }
+
+            roleToUpdate!.Name = request.Name;
+
+            await _roleManager.UpdateAsync(roleToUpdate);
+
+            ViewData["SuccessMessage"] = "Rol bilgisi güncellenmiştir";
+
+            return View();
+        }
+
+        public async Task<IActionResult> RoleDelete(string id)
+        {
+            var roleToDelete = await _roleManager.FindByIdAsync(id);
+
+            if (roleToDelete == null)
+            {
+                throw new Exception("Silinecek rol bulunamamıştır.");
+            }
+
+            var result = await _roleManager.DeleteAsync(roleToDelete);
+
+            if (!result.Succeeded)
+            {
+                throw new Exception(result.Errors.Select(x => x.Description).First());
+            }
+
+            TempData["SuccessMessage"] = "Rol silinmiştir";
+            return RedirectToAction(nameof(RolesController.Index));
+
+
+
+
+        }
     }
 }
