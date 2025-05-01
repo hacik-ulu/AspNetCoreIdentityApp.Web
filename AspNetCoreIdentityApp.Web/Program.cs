@@ -32,7 +32,7 @@ builder.Services.ConfigureApplicationCookie(options =>
 
     cookieBuilder.Name = "AspNetCoreIdentityApp";
     options.LoginPath = "/Default/SignIn";
-
+    options.AccessDeniedPath = "/Member/AccessDenied";
     options.Cookie = cookieBuilder;
     options.ExpireTimeSpan = TimeSpan.FromDays(60);
     options.SlidingExpiration = true;
